@@ -3,8 +3,8 @@ package ru.yandex.practicum.sleeptracker.processingfunction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.sleeptracker.entity.SleepSession;
-import ru.yandex.practicum.sleeptracker.processingfunctioninterface.CountSleeplessNight;
 import ru.yandex.practicum.sleeptracker.interfaceimplementation.CountSleeplessNightImpl;
+import ru.yandex.practicum.sleeptracker.processingfunctioninterface.CountSleeplessNight;
 
 import java.util.ArrayList;
 import java.util.List;

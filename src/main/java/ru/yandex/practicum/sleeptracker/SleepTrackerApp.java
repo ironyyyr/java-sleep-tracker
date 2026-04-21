@@ -25,7 +25,7 @@ public class SleepTrackerApp {
             throw new RuntimeException("Путь к файлу указан некорректно или файл не существует");
         }
 
-        try(BufferedReader bufferedReader = Files.newBufferedReader(resFilePath)){
+        try (BufferedReader bufferedReader = Files.newBufferedReader(resFilePath)) {
             List<SleepSession> sleepSessions = new ArrayList<>();
             String fileLine = bufferedReader.readLine();
 
@@ -42,7 +42,6 @@ public class SleepTrackerApp {
             functionalList.stream()
                     .map(func -> func.apply(sleepSessions))
                     .forEach(System.out::println);
-
 
 
         } catch (IOException ioException) {

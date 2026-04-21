@@ -5,7 +5,7 @@ import ru.yandex.practicum.sleeptracker.processingfunctioninterface.CountBadSlee
 public class CountBadSleepQualityImpl {
     public static CountBadSleepQuality countBadSleepQuality() {
         return sleepSessions -> Math.toIntExact(sleepSessions.stream()
-                        .filter(sleepSession -> sleepSession.getQuality().equals("BAD"))
-                        .count());
+                .filter(sleepSession -> sleepSession.getQuality().equals("BAD"))
+                .count());
     }
 }

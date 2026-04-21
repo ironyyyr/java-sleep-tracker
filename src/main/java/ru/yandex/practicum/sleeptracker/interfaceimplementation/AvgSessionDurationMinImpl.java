@@ -8,6 +8,6 @@ public class AvgSessionDurationMinImpl {
                 sleepSessions.stream()
                         .mapToInt(sl ->
                                 Math.toIntExact(sl.getSleepDuration().toMinutes())).sum()
-        )/sleepSessions.size();
+        ) / sleepSessions.size();
     }
 }

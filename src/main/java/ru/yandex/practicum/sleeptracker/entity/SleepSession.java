@@ -9,12 +9,12 @@ import java.time.format.DateTimeFormatter;
 
 public class SleepSession {
     private final String quality;
-    private Duration sleepDuration;
     private final LocalDateTime sleepStart;
     private final LocalDateTime sleepEnd;
-    DateTimeFormatter dateTimePattern = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
     private final LocalTime DAYTIME_SLEEP_START_TIME = LocalTime.of(12, 59);
     private final LocalTime DAYTIME_SLEEP_END_TIME = LocalTime.of(15, 1);
+    DateTimeFormatter dateTimePattern = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
+    private Duration sleepDuration;
 
     public SleepSession(String sleepData) {
 

@@ -2,7 +2,7 @@ package ru.yandex.practicum.sleeptracker.interfaceimplementation;
 
 import ru.yandex.practicum.sleeptracker.processingfunctioninterface.MinSessionDurationMin;
 
-public class MinSessionDurationMinImpl{
+public class MinSessionDurationMinImpl {
     public static MinSessionDurationMin minSessionDurationMin() {
         return sleepSessions -> Math.toIntExact(sleepSessions.stream()
                 .min((sl1, sl2) ->
