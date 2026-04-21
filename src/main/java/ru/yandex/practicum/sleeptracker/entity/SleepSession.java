@@ -2,9 +2,10 @@ package ru.yandex.practicum.sleeptracker.entity;
 
 import ru.yandex.practicum.sleeptracker.exception.BadSleepFileFormat;
 
-import java.time.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class SleepSession {
     private final String quality;
@@ -62,14 +63,11 @@ public class SleepSession {
     }
 
     public Boolean isDaytimeSleep() {
-        return getSleepStartTime().isAfter(DAYTIME_SLEEP_START_TIME) &&
-                getSleepEndTime().isBefore(DAYTIME_SLEEP_END_TIME) && isSleepEndsThatDay();
+        return getSleepStartTime().isAfter(DAYTIME_SLEEP_START_TIME) && getSleepEndTime().isBefore(DAYTIME_SLEEP_END_TIME) && isSleepEndsThatDay();
     }
 
     @Override
     public String toString() {
-        return "Старт и конец сна в разные дни: " + calcDiffBetweenDays() + " " + isSleepEndsThatDay() +
-                ". Сон начинается раньше 6 часов утра: " + isSleepStartsLaterThanSix() +
-                ". Длительность сна: " + getSleepDuration();
+        return "Старт и конец сна в разные дни: " + calcDiffBetweenDays() + " " + isSleepEndsThatDay() + ". Сон начинается раньше 6 часов утра: " + isSleepStartsLaterThanSix() + ". Длительность сна: " + getSleepDuration();
     }
 }
