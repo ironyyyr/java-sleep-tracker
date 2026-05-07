@@ -1,8 +1,8 @@
 package ru.yandex.practicum.sleeptracker;
 
+import ru.yandex.practicum.sleeptracker.entity.SleepAnalysisResult;
 import ru.yandex.practicum.sleeptracker.entity.SleepSession;
-import ru.yandex.practicum.sleeptracker.interfaceimplementation.*;
-import ru.yandex.practicum.sleeptracker.processingfunctioninterface.*;
+import ru.yandex.practicum.sleeptracker.implementation.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,11 +37,11 @@ public class SleepTrackerApp {
                 fileLine = bufferedReader.readLine();
             }
 
-            List<Function<List<SleepSession>, Object>> functionalList = setUpFunctions();
+            List<Function<List<SleepSession>, SleepAnalysisResult>> functionalList = setUpFunctions();
 
             functionalList.stream()
                     .map(func -> func.apply(sleepSessions))
-                    .forEach(System.out::println);
+                    .forEach(res -> System.out.println(res));
 
 
         } catch (IOException ioException) {
@@ -49,24 +49,25 @@ public class SleepTrackerApp {
         }
     }
 
-    public static List<Function<List<SleepSession>, Object>> setUpFunctions() {
-        List<Function<List<SleepSession>, Object>> functionalInterfaces = new ArrayList<>();
+    public static List<Function<List<SleepSession>, SleepAnalysisResult>> setUpFunctions() {
+        List<Function<List<SleepSession>, SleepAnalysisResult>> functionalInterfaces = new ArrayList<>();
 
-        Size size = SizeImpl.size();
-        MinSessionDurationMin min = MinSessionDurationMinImpl.minSessionDurationMin();
-        MaxSessionDurationMin max = MaxSessionDurationMinImpl.maxSessionDurationMin();
-        AvgSessionDurationMin avg = AvgSessionDurationMinImpl.avgSessionDurationMin();
-        CountBadSleepQuality countBad = CountBadSleepQualityImpl.countBadSleepQuality();
-        CountSleeplessNight countSleepless = CountSleeplessNightImpl.countSleeplessNight();
-        GetUserSleepStatus getUserSleepStatus = GetUserSleepStatusImpl.getUserSleepStatus();
+        SleepListSize sleepListSize = new SleepListSize();
+        CountBadSleepQuality countBadSleepQuality = new CountBadSleepQuality();
+        CountSleeplessNights countSleeplessNights = new CountSleeplessNights();
+        AverageSleepDuration averageSleepDuration = new AverageSleepDuration();
+        MinSleepDuration minSleepDuration = new MinSleepDuration();
+        MaxSleepDuration maxSleepDuration = new MaxSleepDuration();
+        GetUserSleepStatus getUserSleepStatus = new GetUserSleepStatus();
 
-        functionalInterfaces.add(size::size);
-        functionalInterfaces.add(min::minSessionDurationMin);
-        functionalInterfaces.add(max::maxSessionDurationMin);
-        functionalInterfaces.add(avg::avgSessionDurationMin);
-        functionalInterfaces.add(countBad::countBadSleepQuality);
-        functionalInterfaces.add(countSleepless::countSleeplessNight);
-        functionalInterfaces.add(getUserSleepStatus::getUserSleepStatus);
+
+        functionalInterfaces.add(sleepListSize);
+        functionalInterfaces.add(minSleepDuration);
+        functionalInterfaces.add(maxSleepDuration);
+        functionalInterfaces.add(averageSleepDuration);
+        functionalInterfaces.add(countBadSleepQuality);
+        functionalInterfaces.add(countSleeplessNights);
+        functionalInterfaces.add(getUserSleepStatus);
 
         return functionalInterfaces;
     }

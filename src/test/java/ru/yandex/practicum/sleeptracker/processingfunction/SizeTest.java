@@ -2,9 +2,9 @@ package ru.yandex.practicum.sleeptracker.processingfunction;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.sleeptracker.entity.SleepAnalysisResult;
 import ru.yandex.practicum.sleeptracker.entity.SleepSession;
-import ru.yandex.practicum.sleeptracker.interfaceimplementation.SizeImpl;
-import ru.yandex.practicum.sleeptracker.processingfunctioninterface.Size;
+import ru.yandex.practicum.sleeptracker.implementation.SleepListSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,26 +13,28 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SizeTest {
     private static List<SleepSession> sleepSessions;
-    private static Size size;
+    private static SleepAnalysisResult sleepAnalysisResult;
+    private final SleepListSize sleepListSize = new SleepListSize();
 
     @BeforeEach
     void setUp() {
         SleepSession sl1 = new SleepSession("01.10.25 23:15;02.10.25 07:30;GOOD");
         SleepSession sl2 = new SleepSession("02.10.25 23:50;03.10.25 06:40;NORMAL");
-        sleepSessions = new ArrayList<>(List.of(sl1, sl2));
 
-        size = SizeImpl.size();
+        sleepSessions = new ArrayList<>(List.of(sl1, sl2));
     }
 
     @Test
     void successMaxSessionDurationTest() {
-        Integer correctSleepListSize = 2;
+        Double correctSleepListSize = 2.0;
+
+        sleepAnalysisResult = sleepListSize.apply(sleepSessions);
         assertEquals(
                 correctSleepListSize,
-                size.size(sleepSessions),
-                "Расчет средней длительности сна проводится некорректно после обновления" +
+                sleepAnalysisResult.getAnalysisParam(),
+                "Расчет средней длительности сна проводится некорректно после обновления\n" +
                         "ожидаемое значение: " + correctSleepListSize +
-                        "имеем: " + size.size(sleepSessions)
+                        ", имеем: " + sleepAnalysisResult.getAnalysisParam()
         );
     }
 
@@ -40,14 +42,15 @@ public class SizeTest {
     void successAvgSessionDurationAfterUpdateTest() {
         SleepSession sl3 = new SleepSession("03.10.25 14:10;03.10.25 15:00;BAD");
         sleepSessions.add(sl3);
-        Integer newCorrectSleepListSize = 3;
+        Double newCorrectSleepListSize = 3.0;
 
+        sleepAnalysisResult = sleepListSize.apply(sleepSessions);
         assertEquals(
                 newCorrectSleepListSize,
-                size.size(sleepSessions),
-                "Расчет средней длительности сна проводится некорректно после обновления" +
+                sleepAnalysisResult.getAnalysisParam(),
+                "Расчет средней длительности сна проводится некорректно после обновления\n" +
                         "ожидаемое значение: " + newCorrectSleepListSize +
-                        "имеем: " + size.size(sleepSessions)
+                        ", имеем: " + sleepAnalysisResult.getAnalysisParam()
         );
     }
 }

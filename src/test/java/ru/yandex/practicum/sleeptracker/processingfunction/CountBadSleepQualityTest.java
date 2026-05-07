@@ -2,9 +2,9 @@ package ru.yandex.practicum.sleeptracker.processingfunction;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.sleeptracker.entity.SleepAnalysisResult;
 import ru.yandex.practicum.sleeptracker.entity.SleepSession;
-import ru.yandex.practicum.sleeptracker.interfaceimplementation.CountBadSleepQualityImpl;
-import ru.yandex.practicum.sleeptracker.processingfunctioninterface.CountBadSleepQuality;
+import ru.yandex.practicum.sleeptracker.implementation.CountBadSleepQuality;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,26 +13,28 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CountBadSleepQualityTest {
     private static List<SleepSession> sleepSessions;
-    private static CountBadSleepQuality count;
+    private static SleepAnalysisResult sleepAnalysisResult;
+    private final CountBadSleepQuality countBadSleepQuality = new CountBadSleepQuality();
 
     @BeforeEach
     void setUp() {
         SleepSession sl1 = new SleepSession("01.10.25 23:15;02.10.25 07:30;GOOD");
         SleepSession sl2 = new SleepSession("02.10.25 23:50;03.10.25 06:40;NORMAL");
-        sleepSessions = new ArrayList<>(List.of(sl1, sl2));
 
-        count = CountBadSleepQualityImpl.countBadSleepQuality();
+        sleepSessions = new ArrayList<>(List.of(sl1, sl2));
     }
 
     @Test
     void successAvgSessionDurationTest() {
-        Integer correctBadCountSleepSessions = 0;
+        Double correctBadCountSleepSessions = 0.0;
+
+        sleepAnalysisResult = countBadSleepQuality.apply(sleepSessions);
         assertEquals(
                 correctBadCountSleepSessions,
-                count.countBadSleepQuality(sleepSessions),
+                sleepAnalysisResult.getAnalysisParam(),
                 "Расчет средней длительности сна проводится некорректно после обновления" +
                         "ожидаемое значение: " + correctBadCountSleepSessions +
-                        "имеем: " + count.countBadSleepQuality(sleepSessions)
+                        "имеем: " + sleepAnalysisResult.getAnalysisParam()
         );
     }
 
@@ -40,14 +42,15 @@ public class CountBadSleepQualityTest {
     void successAvgSessionDurationAfterUpdateTest() {
         SleepSession sl3 = new SleepSession("03.10.25 14:10;03.10.25 15:00;BAD");
         sleepSessions.add(sl3);
-        Integer newCorrectBadCountSleepSessions = 1;
+        Double newCorrectBadCountSleepSessions = 1.0;
 
+        sleepAnalysisResult = countBadSleepQuality.apply(sleepSessions);
         assertEquals(
                 newCorrectBadCountSleepSessions,
-                count.countBadSleepQuality(sleepSessions),
+                sleepAnalysisResult.getAnalysisParam(),
                 "Расчет средней длительности сна проводится некорректно после обновления" +
                         "ожидаемое значение: " + newCorrectBadCountSleepSessions +
-                        "имеем: " + count.countBadSleepQuality(sleepSessions)
+                        "имеем: " + sleepAnalysisResult.getAnalysisParam()
         );
     }
 }

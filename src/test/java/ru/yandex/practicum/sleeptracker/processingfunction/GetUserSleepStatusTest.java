@@ -2,9 +2,10 @@ package ru.yandex.practicum.sleeptracker.processingfunction;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.sleeptracker.entity.SleepAnalysisResult;
 import ru.yandex.practicum.sleeptracker.entity.SleepSession;
-import ru.yandex.practicum.sleeptracker.interfaceimplementation.GetUserSleepStatusImpl;
-import ru.yandex.practicum.sleeptracker.processingfunctioninterface.GetUserSleepStatus;
+import ru.yandex.practicum.sleeptracker.entity.SleepStatuses;
+import ru.yandex.practicum.sleeptracker.implementation.GetUserSleepStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +14,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GetUserSleepStatusTest {
     private static List<SleepSession> sleepSessions;
-    private static GetUserSleepStatus userSleepStatus;
+    private static SleepAnalysisResult sleepAnalysisResult;
+    private final GetUserSleepStatus getUserSleepStatus = new GetUserSleepStatus();
 
     @BeforeEach
     void setUp() {
         SleepSession sl1 = new SleepSession("01.10.25 23:15;02.10.25 07:30;GOOD");
         SleepSession sl2 = new SleepSession("02.10.25 23:50;03.10.25 06:40;NORMAL");
-        sleepSessions = new ArrayList<>(List.of(sl1, sl2));
 
-        userSleepStatus = GetUserSleepStatusImpl.getUserSleepStatus();
+        sleepSessions = new ArrayList<>(List.of(sl1, sl2));
     }
 
     @Test
@@ -29,12 +30,14 @@ public class GetUserSleepStatusTest {
         sleepSessions.add(new SleepSession("02.10.25 23:10;03.10.25 15:00;BAD"));
         sleepSessions.add(new SleepSession("02.10.25 23:10;03.10.25 15:00;BAD"));
         sleepSessions.add(new SleepSession("02.10.25 23:10;03.10.25 15:00;BAD"));
-        String correctUserSleepStatus = "Сова";
+        SleepStatuses correctUserSleepStatus = SleepStatuses.OWL;
+
+        sleepAnalysisResult = getUserSleepStatus.apply(sleepSessions);
         assertEquals(
                 correctUserSleepStatus,
-                userSleepStatus.getUserSleepStatus(sleepSessions),
+                sleepAnalysisResult.getAnalysisParam(),
                 "Определение статуса пользователя прошло некорректно, должно быть " + correctUserSleepStatus +
-                        " получили " + userSleepStatus.getUserSleepStatus(sleepSessions)
+                        " получили " + sleepAnalysisResult.getAnalysisParam()
         );
     }
 
@@ -43,12 +46,14 @@ public class GetUserSleepStatusTest {
         sleepSessions.add(new SleepSession("02.10.25 21:10;03.10.25 06:00;BAD"));
         sleepSessions.add(new SleepSession("02.10.25 21:10;03.10.25 06:00;BAD"));
         sleepSessions.add(new SleepSession("02.10.25 21:10;03.10.25 06:00;BAD"));
-        String correctUserSleepStatus = "Жаворонок";
+        SleepStatuses correctUserSleepStatus = SleepStatuses.LARK;
+
+        sleepAnalysisResult = getUserSleepStatus.apply(sleepSessions);
         assertEquals(
                 correctUserSleepStatus,
-                userSleepStatus.getUserSleepStatus(sleepSessions),
+                sleepAnalysisResult.getAnalysisParam(),
                 "Определение статуса пользователя прошло некорректно, должно быть " + correctUserSleepStatus +
-                        " получили " + userSleepStatus.getUserSleepStatus(sleepSessions)
+                        " получили " + sleepAnalysisResult.getAnalysisParam()
         );
     }
 
@@ -57,12 +62,14 @@ public class GetUserSleepStatusTest {
         sleepSessions.add(new SleepSession("02.10.25 21:10;03.10.25 08:00;BAD"));
         sleepSessions.add(new SleepSession("02.10.25 21:10;03.10.25 06:00;BAD"));
         sleepSessions.add(new SleepSession("02.10.25 21:10;03.10.25 06:00;BAD"));
-        String correctUserSleepStatus = "Голубь";
+        SleepStatuses correctUserSleepStatus = SleepStatuses.PIGEON;
+
+        sleepAnalysisResult = getUserSleepStatus.apply(sleepSessions);
         assertEquals(
                 correctUserSleepStatus,
-                userSleepStatus.getUserSleepStatus(sleepSessions),
+                sleepAnalysisResult.getAnalysisParam(),
                 "Определение статуса пользователя прошло некорректно, должно быть " + correctUserSleepStatus +
-                        " получили " + userSleepStatus.getUserSleepStatus(sleepSessions)
+                        " получили " + sleepAnalysisResult.getAnalysisParam()
         );
     }
 }
