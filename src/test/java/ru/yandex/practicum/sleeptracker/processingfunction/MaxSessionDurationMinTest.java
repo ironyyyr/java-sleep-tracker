@@ -32,7 +32,7 @@ public class MaxSessionDurationMinTest {
         assertEquals(
                 correctMaxSleepDurationSession,
                 sleepAnalysisResult.getAnalysisParam(),
-                "Расчет средней длительности сна проводится некорректно после обновления" +
+                "Расчет максимальной длительности сна проводится некорректно после обновления" +
                         "ожидаемое значение: " + correctMaxSleepDurationSession +
                         "имеем: " + sleepAnalysisResult.getAnalysisParam()
         );
@@ -48,7 +48,7 @@ public class MaxSessionDurationMinTest {
         assertEquals(
                 newCorrectMaxSleepDurationSession,
                 sleepAnalysisResult.getAnalysisParam(),
-                "Расчет средней длительности сна проводится некорректно после обновления" +
+                "Расчет максимальной длительности сна проводится некорректно после обновления" +
                         "ожидаемое значение: " + newCorrectMaxSleepDurationSession +
                         "имеем: " + sleepAnalysisResult.getAnalysisParam()
         );

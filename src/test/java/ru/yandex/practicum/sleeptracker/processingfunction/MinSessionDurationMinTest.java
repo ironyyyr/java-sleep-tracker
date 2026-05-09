@@ -32,7 +32,7 @@ public class MinSessionDurationMinTest {
         assertEquals(
                 correctMinSleepDuration,
                 sleepAnalysisResult.getAnalysisParam(),
-                "Расчет средней длительности сна проводится некорректно после обновления\n" +
+                "Расчет минимальной длительности сна проводится некорректно после обновления\n" +
                         "ожидаемое значение: " + correctMinSleepDuration +
                         ", имеем: " + sleepAnalysisResult.getAnalysisParam()
         );
@@ -48,7 +48,7 @@ public class MinSessionDurationMinTest {
         assertEquals(
                 newCorrectMinSleepDuration,
                 sleepAnalysisResult.getAnalysisParam(),
-                "Расчет средней длительности сна проводится некорректно после обновления\n" +
+                "Расчет минимальной длительности сна проводится некорректно после обновления\n" +
                         "ожидаемое значение: " + newCorrectMinSleepDuration +
                         ", имеем: " + sleepAnalysisResult.getAnalysisParam()
         );

@@ -25,21 +25,21 @@ public class SizeTest {
     }
 
     @Test
-    void successMaxSessionDurationTest() {
+    void successSleepListSizeTest() {
         Double correctSleepListSize = 2.0;
 
         sleepAnalysisResult = sleepListSize.apply(sleepSessions);
         assertEquals(
                 correctSleepListSize,
                 sleepAnalysisResult.getAnalysisParam(),
-                "Расчет средней длительности сна проводится некорректно после обновления\n" +
+                "Расчет количества сессий сна проводится некорректно после обновления\n" +
                         "ожидаемое значение: " + correctSleepListSize +
                         ", имеем: " + sleepAnalysisResult.getAnalysisParam()
         );
     }
 
     @Test
-    void successAvgSessionDurationAfterUpdateTest() {
+    void successSleepListSizeTestAfterUpdateTest() {
         SleepSession sl3 = new SleepSession("03.10.25 14:10;03.10.25 15:00;BAD");
         sleepSessions.add(sl3);
         Double newCorrectSleepListSize = 3.0;
@@ -48,7 +48,7 @@ public class SizeTest {
         assertEquals(
                 newCorrectSleepListSize,
                 sleepAnalysisResult.getAnalysisParam(),
-                "Расчет средней длительности сна проводится некорректно после обновления\n" +
+                "Расчет количества сессий сна сна проводится некорректно после обновления\n" +
                         "ожидаемое значение: " + newCorrectSleepListSize +
                         ", имеем: " + sleepAnalysisResult.getAnalysisParam()
         );
