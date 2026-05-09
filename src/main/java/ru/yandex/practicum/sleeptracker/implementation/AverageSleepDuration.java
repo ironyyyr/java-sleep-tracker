@@ -1,5 +1,6 @@
 package ru.yandex.practicum.sleeptracker.implementation;
 
+import ru.yandex.practicum.sleeptracker.entity.AnalysisMessages;
 import ru.yandex.practicum.sleeptracker.entity.SleepAnalysisResult;
 import ru.yandex.practicum.sleeptracker.entity.SleepSession;
 
@@ -16,7 +17,8 @@ public class AverageSleepDuration implements Function<List<SleepSession>, SleepA
                         .orElse(0);
 
         return new SleepAnalysisResult(
-                "Средняя длительность сна: ",
-                Math.round(averageDuration * 100) / 100.0);
+                AnalysisMessages.getMessage("averageSleepDuration"),
+                Math.round(averageDuration * 100) / 100.0
+        );
     }
 }

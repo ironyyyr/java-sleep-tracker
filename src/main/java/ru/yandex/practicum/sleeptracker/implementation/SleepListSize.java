@@ -1,5 +1,6 @@
 package ru.yandex.practicum.sleeptracker.implementation;
 
+import ru.yandex.practicum.sleeptracker.entity.AnalysisMessages;
 import ru.yandex.practicum.sleeptracker.entity.SleepAnalysisResult;
 import ru.yandex.practicum.sleeptracker.entity.SleepSession;
 
@@ -9,6 +10,9 @@ import java.util.function.Function;
 public class SleepListSize implements Function<List<SleepSession>, SleepAnalysisResult> {
     @Override
     public SleepAnalysisResult apply(List<SleepSession> sleepSessions) {
-        return new SleepAnalysisResult("Количество сессий сна в логе: ", (double) sleepSessions.size());
+        return new SleepAnalysisResult(
+                AnalysisMessages.getMessage("sleepListSize"),
+                (double) sleepSessions.size()
+        );
     }
 }

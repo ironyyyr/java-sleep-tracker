@@ -1,5 +1,6 @@
 package ru.yandex.practicum.sleeptracker.implementation;
 
+import ru.yandex.practicum.sleeptracker.entity.AnalysisMessages;
 import ru.yandex.practicum.sleeptracker.entity.SleepAnalysisResult;
 import ru.yandex.practicum.sleeptracker.entity.SleepSession;
 
@@ -13,6 +14,9 @@ public class MaxSleepDuration implements Function<List<SleepSession>, SleepAnaly
                 .max((SleepSession sl1, SleepSession sl2) -> sl1.getSleepDuration().compareTo(sl2.getSleepDuration()))
                 .get().getSleepDuration().toMinutes();
 
-        return new SleepAnalysisResult("Минимальная длительность сна: ", maxSleepDuration);
+        return new SleepAnalysisResult(
+                AnalysisMessages.getMessage("maxSleepDuration"),
+                maxSleepDuration
+        );
     }
 }

@@ -3,12 +3,13 @@ package ru.yandex.practicum.sleeptracker.entity;
 import ru.yandex.practicum.sleeptracker.exception.BadSleepFileFormat;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class SleepSession {
-    private final String quality;
+    private SleepQualities quality;
     private final LocalDateTime sleepStart;
     private final LocalDateTime sleepEnd;
     private final LocalTime daytimeSleepStartTime = LocalTime.of(12, 59);
@@ -25,7 +26,11 @@ public class SleepSession {
         String[] list = sleepData.split(";");
         this.sleepStart = LocalDateTime.parse(list[0], dateTimePattern);
         this.sleepEnd = LocalDateTime.parse(list[1], dateTimePattern);
-        this.quality = list[2];
+        switch (list[2]) {
+            case "BAD" -> quality = SleepQualities.BAD;
+            case "NORMAL" -> quality = SleepQualities.NORMAL;
+            case "GOOD" -> quality = SleepQualities.GOOD;
+        }
 
         calculateSleepDuration();
     }
@@ -34,7 +39,7 @@ public class SleepSession {
         this.sleepDuration = Duration.between(sleepStart, sleepEnd);
     }
 
-    public String getQuality() {
+    public SleepQualities getQuality() {
         return quality;
     }
 
@@ -54,16 +59,25 @@ public class SleepSession {
         return sleepStart.toLocalTime().isAfter(LocalTime.of(6, 0));
     }
 
-    public LocalTime getSleepStartTime() {
-        return sleepStart.toLocalTime();
+    public LocalDateTime getSleepStartTime() {
+        return sleepStart;
     }
 
-    public LocalTime getSleepEndTime() {
-        return sleepEnd.toLocalTime();
+    public LocalDate getSleepStartDate() {
+        return sleepStart.toLocalDate();
+    }
+
+    public LocalDate getSleepEndDate() {
+        return sleepEnd.toLocalDate();
+    }
+
+    public LocalDateTime getSleepEndTime() {
+        return sleepEnd;
     }
 
     public Boolean isDaytimeSleep() {
-        return getSleepStartTime().isAfter(daytimeSleepStartTime) && getSleepEndTime().isBefore(daytimeSleepEndTime) &&
+        return getSleepStartTime().toLocalTime().isAfter(daytimeSleepStartTime) &&
+                getSleepEndTime().toLocalTime().isBefore(daytimeSleepEndTime) &&
                 isSleepEndsThatDay();
     }
 

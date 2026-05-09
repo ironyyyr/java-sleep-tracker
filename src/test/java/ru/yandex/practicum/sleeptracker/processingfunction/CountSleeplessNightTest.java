@@ -25,7 +25,7 @@ public class CountSleeplessNightTest {
     }
 
     @Test
-    void getZeroSleeplessNight() {
+    void getZeroSleeplessNightSuccess() {
         Double correctQuantityOfSleeplessNight = 0.0;
 
         sleepAnalysisResult = countSleeplessNights.apply(sleepSessions);
@@ -39,8 +39,23 @@ public class CountSleeplessNightTest {
     }
 
     @Test
-    void getOneSleeplessNight() {
+    void getOneSleeplessNightSuccess() {
         sleepSessions.add(new SleepSession("03.10.25 17:50;03.10.25 23:40;NORMAL"));
+        Double correctQuantityOfSleeplessNight = 1.0;
+
+        sleepAnalysisResult = countSleeplessNights.apply(sleepSessions);
+        assertEquals(
+                correctQuantityOfSleeplessNight,
+                sleepAnalysisResult.getAnalysisParam(),
+                "Определение количества бессонных ночей работает некорректно " +
+                        "\nожидаемое значение: " + correctQuantityOfSleeplessNight +
+                        "\nимеем: " + sleepAnalysisResult.getAnalysisParam()
+        );
+    }
+
+    @Test
+    void getSleeplessNightWhichStartsThatDaySuccess() {
+        sleepSessions.add(new SleepSession("03.10.25 07:50;03.10.25 23:40;NORMAL"));
         Double correctQuantityOfSleeplessNight = 1.0;
 
         sleepAnalysisResult = countSleeplessNights.apply(sleepSessions);
