@@ -11,7 +11,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class GetUserSleepStatus implements Function<List<SleepSession>, SleepAnalysisResult> {
-    private final String MESSAGE = "Ваш тип сна: ";
+    private static final String MESSAGE = "Ваш тип сна: ";
 
     @Override
     public SleepAnalysisResult apply(List<SleepSession> sleepSessions) {

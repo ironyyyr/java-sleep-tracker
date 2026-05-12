@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public class AverageSleepDuration implements Function<List<SleepSession>, SleepAnalysisResult> {
-    private final String MESSAGE = "Средняя длительность сна: ";
+    private static final String MESSAGE = "Средняя длительность сна: ";
 
     @Override
     public SleepAnalysisResult apply(List<SleepSession> sleepSessions) {

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public class MaxSleepDuration implements Function<List<SleepSession>, SleepAnalysisResult> {
-    private final String MESSAGE = "Максимальная длительность сна: ";
+    private static final String MESSAGE = "Максимальная длительность сна: ";
 
     @Override
     public SleepAnalysisResult apply(List<SleepSession> sleepSessions) {

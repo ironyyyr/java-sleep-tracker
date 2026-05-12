@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public class MinSleepDuration implements Function<List<SleepSession>, SleepAnalysisResult> {
-    private final String MESSAGE = "Минимальная длительность сна: ";
+    private static final String MESSAGE = "Минимальная длительность сна: ";
 
     @Override
     public SleepAnalysisResult apply(List<SleepSession> sleepSessions) {
