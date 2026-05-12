@@ -1,11 +1,9 @@
 package ru.yandex.practicum.sleeptracker.implementation;
 
-import ru.yandex.practicum.sleeptracker.entity.AnalysisMessages;
 import ru.yandex.practicum.sleeptracker.entity.SleepAnalysisResult;
 import ru.yandex.practicum.sleeptracker.entity.SleepSession;
 import ru.yandex.practicum.sleeptracker.entity.SleepStatuses;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
@@ -13,38 +11,20 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class GetUserSleepStatus implements Function<List<SleepSession>, SleepAnalysisResult> {
+    private final String MESSAGE = "Ваш тип сна: ";
+
     @Override
     public SleepAnalysisResult apply(List<SleepSession> sleepSessions) {
         Map<SleepStatuses, Long> pair = sleepSessions.stream()
                 .filter(sleepSession -> !sleepSession.isDaytimeSleep())
                 .map(sleepSession -> {
-                    LocalDateTime owlSleepStartTime = LocalDateTime.of(
-                            sleepSession.getSleepEndDate().minusDays(1),
-                            LocalTime.of(23, 0)
-                    );
-                    LocalDateTime owlSleepEndTime = LocalDateTime.of(
-                            sleepSession.getSleepEndDate(),
-                            LocalTime.of(9, 0)
-                    );
+                    boolean isOwl = isOwl(sleepSession);
 
-                    LocalDateTime larkSleepStartTime = LocalDateTime.of(
-                            sleepSession.getSleepStartDate(),
-                            LocalTime.of(22, 0)
-                    );
-                    LocalDateTime larkSleepEndTime = LocalDateTime.of(
-                            sleepSession.getSleepEndDate(),
-                            LocalTime.of(7, 0)
-                    );
+                    boolean isLark = isLark(sleepSession);
 
-                    if (
-                            sleepSession.getSleepStartTime().isAfter(owlSleepStartTime) &&
-                                    sleepSession.getSleepEndTime().isAfter(owlSleepEndTime)
-                    ) {
+                    if (isOwl) {
                         return SleepStatuses.OWL;
-                    } else if (
-                            sleepSession.getSleepStartTime().isBefore(larkSleepStartTime) &&
-                                    sleepSession.getSleepEndTime().isBefore(larkSleepEndTime)
-                    ) {
+                    } else if (isLark) {
                         return SleepStatuses.LARK;
                     } else {
                         return SleepStatuses.PIGEON;
@@ -58,22 +38,38 @@ public class GetUserSleepStatus implements Function<List<SleepSession>, SleepAna
         long owls = pair.getOrDefault(SleepStatuses.OWL, 0L);
         long larks = pair.getOrDefault(SleepStatuses.LARK, 0L);
         long pigeons = pair.getOrDefault(SleepStatuses.PIGEON, 0L);
-        String message = AnalysisMessages.getMessage("getUserSleepStatus");
 
         if (owls == larks) {
-            return new SleepAnalysisResult(message, SleepStatuses.PIGEON);
+            return new SleepAnalysisResult(MESSAGE, SleepStatuses.PIGEON);
         }
 
         if (owls > larks && owls > pigeons) {
-            return new SleepAnalysisResult(message, SleepStatuses.OWL);
+            return new SleepAnalysisResult(MESSAGE, SleepStatuses.OWL);
         }
 
         if (larks > owls && larks > pigeons) {
-            return new SleepAnalysisResult(message, SleepStatuses.LARK);
+            return new SleepAnalysisResult(MESSAGE, SleepStatuses.LARK);
         }
 
-        return new SleepAnalysisResult(message, SleepStatuses.PIGEON);
+        return new SleepAnalysisResult(MESSAGE, SleepStatuses.PIGEON);
     }
 
-    ;
+    private boolean isOwl(SleepSession sleepSession) {
+        LocalTime owlSleepStart = LocalTime.of(23, 0);
+        LocalTime owlSleepEnd = LocalTime.of(9, 0);
+
+
+        return (
+                sleepSession.getSleepStartTime().isAfter(owlSleepStart) ||
+                        sleepSession.getSleepStartTime().isBefore(sleepSession.getSleepEndTime())
+        ) & sleepSession.getSleepEndTime().isAfter(owlSleepEnd);
+    }
+
+    private boolean isLark(SleepSession sleepSession) {
+        LocalTime larkSleepStart = LocalTime.of(22, 0);
+        LocalTime larkSleepEnd = LocalTime.of(7, 0);
+
+        return sleepSession.getSleepStartTime().isBefore(larkSleepStart) &&
+                sleepSession.getSleepEndTime().isBefore(larkSleepEnd);
+    }
 }

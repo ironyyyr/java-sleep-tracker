@@ -3,19 +3,16 @@ package ru.yandex.practicum.sleeptracker.entity;
 import ru.yandex.practicum.sleeptracker.exception.BadSleepFileFormat;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class SleepSession {
-    private SleepQualities quality;
+    private final SleepQualities quality;
     private final LocalDateTime sleepStart;
     private final LocalDateTime sleepEnd;
-    private final LocalTime daytimeSleepStartTime = LocalTime.of(12, 59);
-    private final LocalTime daytimeSleepEndTime = LocalTime.of(15, 1);
+
     DateTimeFormatter dateTimePattern = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
-    private Duration sleepDuration;
 
     public SleepSession(String sleepData) {
 
@@ -26,17 +23,7 @@ public class SleepSession {
         String[] list = sleepData.split(";");
         this.sleepStart = LocalDateTime.parse(list[0], dateTimePattern);
         this.sleepEnd = LocalDateTime.parse(list[1], dateTimePattern);
-        switch (list[2]) {
-            case "BAD" -> quality = SleepQualities.BAD;
-            case "NORMAL" -> quality = SleepQualities.NORMAL;
-            case "GOOD" -> quality = SleepQualities.GOOD;
-        }
-
-        calculateSleepDuration();
-    }
-
-    private void calculateSleepDuration() {
-        this.sleepDuration = Duration.between(sleepStart, sleepEnd);
+        this.quality = SleepQualities.parseString(list[2]);
     }
 
     public SleepQualities getQuality() {
@@ -44,7 +31,7 @@ public class SleepSession {
     }
 
     public Duration getSleepDuration() {
-        return sleepDuration;
+        return Duration.between(sleepStart, sleepEnd);
     }
 
     public Boolean isSleepEndsThatDay() {
@@ -59,32 +46,26 @@ public class SleepSession {
         return sleepStart.toLocalTime().isAfter(LocalTime.of(6, 0));
     }
 
-    public LocalDateTime getSleepStartTime() {
-        return sleepStart;
+    public LocalTime getSleepStartTime() {
+        return sleepStart.toLocalTime();
     }
 
-    public LocalDate getSleepStartDate() {
-        return sleepStart.toLocalDate();
-    }
-
-    public LocalDate getSleepEndDate() {
-        return sleepEnd.toLocalDate();
-    }
-
-    public LocalDateTime getSleepEndTime() {
-        return sleepEnd;
+    public LocalTime getSleepEndTime() {
+        return sleepEnd.toLocalTime();
     }
 
     public Boolean isDaytimeSleep() {
-        return getSleepStartTime().toLocalTime().isAfter(daytimeSleepStartTime) &&
-                getSleepEndTime().toLocalTime().isBefore(daytimeSleepEndTime) &&
+        LocalTime daytimeSleepStartTime = LocalTime.of(12, 59);
+        LocalTime daytimeSleepEndTime = LocalTime.of(15, 1);
+
+        return getSleepStartTime().isAfter(daytimeSleepStartTime) &&
+                getSleepEndTime().isBefore(daytimeSleepEndTime) &&
                 isSleepEndsThatDay();
     }
 
     @Override
     public String toString() {
         return "Старт и конец сна в разные дни: " + calcDiffBetweenDays() + " " + isSleepEndsThatDay() +
-                ". Сон начинается раньше 6 часов утра: " + isSleepStartsLaterThanSix() +
-                ". Длительность сна: " + getSleepDuration();
+                ". Сон начинается раньше 6 часов утра: " + isSleepStartsLaterThanSix();
     }
 }
